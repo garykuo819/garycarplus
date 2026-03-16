@@ -1,0 +1,555 @@
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Car,
+  Wallet,
+  TrendingUp,
+  FileText,
+  ShieldCheck,
+  Phone,
+  CheckCircle2,
+  ArrowRight,
+  Coins,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+
+const summaryCards = [
+  {
+    title: "簽約當下現金支出",
+    cash: "NT$620,483",
+    lease: "NT$170,000",
+    note: "租賃前期保留更多資金，降低一次性現金壓力。",
+    icon: Wallet,
+  },
+  {
+    title: "3 年帳面最終淨支出",
+    cash: "NT$209,312",
+    lease: "NT$219,190",
+    note: "若只看帳面持有成本，現金全款略低。",
+    icon: FileText,
+  },
+  {
+    title: "3 年資金效率後淨支出",
+    cash: "NT$209,312",
+    lease: "NT$177,418",
+    note: "納入資金運用後，租賃整體更有優勢。",
+    icon: TrendingUp,
+  },
+];
+
+const topStats = [
+  { label: "比較期間", value: "3 年" },
+  { label: "比較車型", value: "中華菱利 4WD A190" },
+  { label: "車價", value: "NT$572,000" },
+  { label: "投資假設", value: "年化 3% 複利" },
+];
+
+const serviceItems = [
+  {
+    title: "事故代步車",
+    desc: "降低車輛維修或事故期間的用車中斷風險。",
+  },
+  {
+    title: "全台 24 小時道路救援",
+    desc: "突發狀況時處理效率更高，減少臨時應變壓力。",
+  },
+  {
+    title: "格上租車優惠",
+    desc: "平日 5 折、假日 7 折，保留額外用車彈性。",
+  },
+];
+
+const enterpriseReasons = [
+  {
+    title: "時間成本",
+    desc: "企業真正該投入時間的地方，是客戶、營運、業務與獲利，而不是反覆處理保險、稅金、保養、維修、事故與賣車流程。租賃把原本零碎的車務管理，整合成更省時的方案。",
+  },
+  {
+    title: "資金成本",
+    desc: "企業最貴的，很多時候不是車價，而是被壓住的現金。租賃把大額一次性支出，轉成可預測、可管理的月付節奏，讓公司保留更多現金彈性。",
+  },
+  {
+    title: "人力與管理成本",
+    desc: "只要公司有車，就會有保養、維修、事故、代步、估價與處分等管理工作。租賃的價值，在於降低內部行政與主管被車務雜事分散的程度。",
+  },
+  {
+    title: "風險成本",
+    desc: "企業最怕的通常不是花錢，而是不確定。租賃將保險、救援、代步、殘值與處分問題提早納入規劃，讓用車過程更可控。",
+  },
+  {
+    title: "財務節奏與經營效率",
+    desc: "從經營角度來看，最好的支出不一定最低，而是可預測、可規劃、可管理。租賃的固定月付與完整服務，更有利於財務穩定與經營效率。",
+  },
+];
+
+const comparisonSections = [
+  {
+    title: "一、方案條件",
+    rows: [
+      {
+        item: "頭款／保證金（期末可折抵尾款）",
+        cash: "NT$572,000",
+        lease: "NT$170,000",
+        note: "現金一次付清；租賃支付保證金，期末可折抵尾款或安排過戶第三人。",
+      },
+      {
+        item: "合約期數（月）",
+        cash: "0",
+        lease: "36",
+        note: "現金無分期；租賃為 36 期固定月付。",
+      },
+      {
+        item: "每月支付金額（貸款／租金）",
+        cash: "NT$0",
+        lease: "NT$18,200",
+        note: "租賃月租固定，現金流更容易規劃。",
+      },
+      {
+        item: "乙式保險（年）",
+        cash: "NT$40,983",
+        lease: "已含",
+        note: "租賃方案月租已含保險。",
+      },
+      {
+        item: "年度牌照稅＋燃料費（1500cc）",
+        cash: "NT$7,500",
+        lease: "已含",
+        note: "租賃方案月租已含稅費。",
+      },
+    ],
+  },
+  {
+    title: "二、前期資金壓力",
+    rows: [
+      {
+        item: "簽約／購車當下現金支出",
+        cash: "NT$620,483",
+        lease: "NT$170,000",
+        note: "現金：車價＋首年保險＋首年稅費；租賃：僅需支付保證金。",
+      },
+      {
+        item: "可運用資金差額",
+        cash: "NT$0",
+        lease: "NT$450,483",
+        note: "現金當下支出－租賃當下支出，可保留更多資金作營運或投資。",
+      },
+      {
+        item: "資金運用收益（假設年化 3%，複利）",
+        cash: "NT$0",
+        lease: "NT$41,772",
+        note: "450,483 ×（1.03³－1）＝ 41,772。",
+      },
+    ],
+  },
+  {
+    title: "三、3 年持有成本",
+    rows: [
+      {
+        item: "3 年總支出",
+        cash: "NT$717,449",
+        lease: "NT$825,200",
+        note: "現金：車價＋3 年保險與稅費；租賃：保證金＋36 期月租。",
+      },
+      {
+        item: "可扣抵 5% 進項營業稅",
+        cash: "-NT$27,238",
+        lease: "-NT$31,212",
+        note: "本表以貨車進項營業稅可扣抵之口徑試算。",
+      },
+      {
+        item: "3 年可認列費用對應之 20% 營所稅效益",
+        cash: "-NT$87,924",
+        lease: "-NT$124,798",
+        note: "依 5 年平均法、預估殘值 10% 試算。",
+      },
+      {
+        item: "3 年後出售車輛之預估殘值",
+        cash: "-NT$450,000",
+        lease: "-NT$450,000",
+        note: "假設 3 年後出售成交價為 NT$450,000。",
+      },
+      {
+        item: "公司出售車輛應開立之 5% 營業稅",
+        cash: "NT$21,429",
+        lease: "—",
+        note: "450,000 × 5 ÷ 105 ＝ 21,429。",
+      },
+      {
+        item: "公司出售車輛之財產交易所得稅（20%）",
+        cash: "NT$35,596",
+        lease: "—",
+        note: "賣價未稅 428,571；3 年後帳面價值 250,591；出售利益 177,980；營所稅 20% ＝ 35,596。",
+      },
+    ],
+  },
+];
+
+function SummaryCard({ card, delay }) {
+  const Icon = card.icon;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, delay }}
+    >
+      <Card className="h-full rounded-3xl border-white/10 bg-white/[0.05] text-white shadow-2xl backdrop-blur-xl">
+        <CardHeader className="pb-2">
+          <div className="mb-4 flex items-center justify-between">
+            <Badge className="border border-amber-400/30 bg-amber-400/10 text-amber-200 hover:bg-amber-400/10">
+              核心比較
+            </Badge>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-2">
+              <Icon className="h-5 w-5 text-amber-300" />
+            </div>
+          </div>
+          <CardTitle className="text-lg leading-snug text-white">{card.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <div className="text-xs text-zinc-400">現金全款</div>
+              <div className="mt-1 text-xl font-semibold tracking-tight">{card.cash}</div>
+            </div>
+            <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4">
+              <div className="text-xs text-amber-100/80">租賃方案</div>
+              <div className="mt-1 text-xl font-semibold tracking-tight text-amber-100">{card.lease}</div>
+            </div>
+          </div>
+          <p className="text-sm leading-7 text-zinc-300">{card.note}</p>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+function SectionTable({ section, delay }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 0.45, delay }}
+    >
+      <Card className="overflow-hidden rounded-3xl border-white/10 bg-white/[0.04] text-white shadow-2xl backdrop-blur-xl">
+        <CardHeader className="border-b border-white/10 bg-white/[0.03]">
+          <CardTitle className="text-lg text-white sm:text-xl">{section.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="p-4 sm:p-0">
+          <div className="space-y-4 sm:hidden">
+            {section.rows.map((row, idx) => (
+              <div key={idx} className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <div className="text-base font-semibold leading-7 text-white">{row.item}</div>
+                <div className="mt-4 grid gap-3">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                    <div className="text-xs text-zinc-400">現金全款</div>
+                    <div className="mt-1 text-sm font-medium text-zinc-100">{row.cash}</div>
+                  </div>
+                  <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 p-3">
+                    <div className="text-xs text-amber-100/80">租賃方案</div>
+                    <div className="mt-1 text-sm font-medium text-amber-50">{row.lease}</div>
+                  </div>
+                </div>
+                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-sm leading-7 text-zinc-300">
+                  {row.note}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden overflow-x-auto sm:block">
+            <table className="w-full min-w-[880px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/[0.02] text-zinc-300">
+                  <th className="px-5 py-4 font-medium">比較項目</th>
+                  <th className="px-5 py-4 font-medium">現金全款</th>
+                  <th className="px-5 py-4 font-medium">租賃方案</th>
+                  <th className="px-5 py-4 font-medium">說明</th>
+                </tr>
+              </thead>
+              <tbody>
+                {section.rows.map((row, idx) => (
+                  <tr key={idx} className="border-b border-white/5 align-top hover:bg-white/[0.03]">
+                    <td className="px-5 py-4 font-medium text-white">{row.item}</td>
+                    <td className="px-5 py-4 text-zinc-200">{row.cash}</td>
+                    <td className="px-5 py-4 text-zinc-200">{row.lease}</td>
+                    <td className="px-5 py-4 leading-7 text-zinc-400">{row.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+export default function LeasingComparisonWebpage() {
+  return (
+    <div className="min-h-screen bg-[#09090b] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.18),transparent_24%),radial-gradient(circle_at_90%_10%,rgba(255,255,255,0.06),transparent_16%),linear-gradient(to_bottom,rgba(255,255,255,0.02),transparent)]" />
+
+      <div className="relative mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-8 lg:px-8">
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.05] p-4 shadow-2xl backdrop-blur-xl sm:rounded-[32px] sm:p-8 lg:p-10"
+        >
+          <div className="grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
+            <div>
+              <div className="mb-4 flex flex-wrap gap-2">
+                <Badge className="border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-amber-200 hover:bg-amber-400/10">
+                  公司戶 3 年持有成本比較
+                </Badge>
+                <Badge variant="outline" className="border-white/15 bg-transparent px-3 py-1 text-zinc-300">
+                  黑金提案版
+                </Badge>
+              </div>
+              <h1 className="max-w-4xl text-2xl font-semibold leading-tight tracking-tight sm:text-5xl">
+                現金全款 vs 租賃方案
+                <span className="mt-2 block text-amber-300">一眼看懂 3 年持有成本與資金效率</span>
+              </h1>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-zinc-300 sm:mt-5 sm:text-lg sm:leading-8">
+                這不是只比較月付，而是把前期現金壓力、稅務效益、預估殘值、出售稅負，以及保留資金後的運用效率一起納入，讓企業決策更完整。
+              </p>
+            </div>
+
+            <Card className="rounded-3xl border-amber-400/20 bg-amber-400/[0.08] shadow-xl">
+              <CardContent className="p-6">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="rounded-2xl bg-amber-400/10 p-2.5">
+                    <Car className="h-5 w-5 text-amber-300" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-amber-100/80">比較車型</div>
+                    <div className="text-lg font-semibold text-white">中華菱利 4WD A190</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {topStats.map((stat) => (
+                    <div key={stat.label} className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                      <div className="text-xs text-zinc-400">{stat.label}</div>
+                      <div className="mt-1 text-sm font-medium text-white sm:text-base">{stat.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </motion.section>
+
+        <section className="mt-6 grid gap-4 lg:mt-8 lg:grid-cols-3">
+          {summaryCards.map((card, index) => (
+            <SummaryCard key={card.title} card={card} delay={index * 0.08} />
+          ))}
+        </section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="mt-6 grid gap-4 lg:mt-8 lg:grid-cols-3"
+        >
+          {serviceItems.map((item) => (
+            <Card key={item.title} className="rounded-3xl border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl">
+              <CardContent className="p-6">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-400/20 bg-amber-400/10">
+                  <CheckCircle2 className="h-5 w-5 text-amber-300" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-zinc-300">{item.desc}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </motion.section>
+
+        <section className="mt-6 space-y-4 sm:mt-8 sm:space-y-6">
+          {comparisonSections.map((section, index) => (
+            <SectionTable key={section.title} section={section} delay={index * 0.05} />
+          ))}
+        </section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="mt-8"
+        >
+          <Card className="rounded-[32px] border border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl">
+            <CardContent className="p-6 sm:p-8 lg:p-10">
+              <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <Badge className="mb-4 border border-amber-400/30 bg-amber-400/10 text-amber-200 hover:bg-amber-400/10">
+                    企業角度總整理
+                  </Badge>
+                  <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                    從企業經營角度，為什麼更應該考慮租賃？
+                  </h2>
+                  <p className="mt-4 max-w-3xl text-base leading-8 text-zinc-300">
+                    對企業來說，車輛不只是購買成本，而是時間成本、資金成本、人力成本、風險成本與管理成本的總和。租賃的價值，是把原本分散且不可預期的用車問題，整理成更穩定、更好管理的方案。
+                  </p>
+                </div>
+                <div className="rounded-3xl border border-amber-400/20 bg-amber-400/10 px-5 py-4 text-sm leading-7 text-amber-100 lg:max-w-sm">
+                  公司真正該留下來的，不是車，而是現金、效率與選擇權。
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+                {enterpriseReasons.map((reason) => (
+                  <div
+                    key={reason.title}
+                    className="rounded-3xl border border-white/10 bg-black/20 p-5 transition-colors hover:bg-white/[0.04]"
+                  >
+                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-400/20 bg-amber-400/10">
+                      <CheckCircle2 className="h-5 w-5 text-amber-300" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white">{reason.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-zinc-300">{reason.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="mt-6 grid gap-4 lg:mt-8 lg:grid-cols-2"
+        >
+          <Card className="rounded-3xl border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl text-white">
+                <ShieldCheck className="h-5 w-5 text-zinc-300" />
+                現金全款重點
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm leading-7 text-zinc-300">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                3 年帳面持有成本略低，但一次性資金占用高，保險、稅費、道路風險與後續處分流程皆需自行管理。
+              </div>
+              <ul className="space-y-2">
+                <li className="flex gap-2"><ArrowRight className="mt-1 h-4 w-4 text-zinc-400" />簽約當下現金支出最高</li>
+                <li className="flex gap-2"><ArrowRight className="mt-1 h-4 w-4 text-zinc-400" />稅費與保險需逐年處理</li>
+                <li className="flex gap-2"><ArrowRight className="mt-1 h-4 w-4 text-zinc-400" />賣車時仍有營業稅與財產交易所得稅</li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-3xl border-emerald-400/20 bg-emerald-500/[0.08] shadow-2xl backdrop-blur-xl">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl text-white">
+                <Coins className="h-5 w-5 text-emerald-300" />
+                租賃方案重點
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm leading-7 text-emerald-50/90">
+              <div className="rounded-2xl border border-emerald-300/20 bg-black/10 p-4">
+                若把前期保留資金的運用效率也納入，租賃方案在整體資金彈性與 3 年調整後淨支出上更具優勢。
+              </div>
+              <ul className="space-y-2">
+                <li className="flex gap-2"><ArrowRight className="mt-1 h-4 w-4 text-emerald-300" />保留更多可運用資金</li>
+                <li className="flex gap-2"><ArrowRight className="mt-1 h-4 w-4 text-emerald-300" />月付固定，便於財務規劃</li>
+                <li className="flex gap-2"><ArrowRight className="mt-1 h-4 w-4 text-emerald-300" />用車管理、代步與救援服務更完整</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="mt-8"
+        >
+          <Card className="rounded-[32px] border border-amber-400/20 bg-gradient-to-br from-amber-400/10 via-white/[0.03] to-transparent shadow-2xl backdrop-blur-xl">
+            <CardContent className="p-6 sm:p-8 lg:p-10">
+              <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
+                <div>
+                  <Badge className="mb-4 border border-amber-400/30 bg-amber-400/10 text-amber-200 hover:bg-amber-400/10">
+                    最終結論
+                  </Badge>
+                  <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                    若只看帳面，現金略低；
+                    <span className="block text-amber-300">若看整體資金效率，租賃更值得比較。</span>
+                  </h2>
+                  <p className="mt-4 max-w-3xl text-base leading-8 text-zinc-300">
+                    對企業而言，真正重要的不只是買得便不便宜，而是資金要不要一次壓住、風險誰來處理、以及 3 年後整體資金效率是不是更好。
+                  </p>
+                  <div className="mt-5 rounded-3xl border border-amber-400/20 bg-amber-400/10 p-5 text-base leading-8 text-amber-100">
+                    公司真正該留下來的，不是車，而是現金、效率與選擇權。
+                  </div>
+                  <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <a href="https://line.me/ti/p/~garykuo819" target="_blank" rel="noreferrer">
+                      <Button className="w-full rounded-2xl bg-amber-400 px-5 text-black hover:bg-amber-300 sm:w-auto">
+                        立即洽詢租賃規劃
+                      </Button>
+                    </a>
+                    <Button variant="outline" className="w-full rounded-2xl border-white/15 bg-transparent text-white hover:bg-white/10 sm:w-auto">
+                      下載比較表 PDF
+                    </Button>
+                  </div>
+                </div>
+
+                <Card className="rounded-3xl border-white/10 bg-black/20 shadow-xl">
+                  <CardContent className="p-6">
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-2.5">
+                        <Phone className="h-5 w-5 text-amber-300" />
+                      </div>
+                      <div>
+                        <div className="text-sm text-zinc-400">聯絡窗口</div>
+                        <div className="text-lg font-semibold text-white">Gary｜企業用車規劃</div>
+                      </div>
+                    </div>
+                    <Separator className="my-4 bg-white/10" />
+                    <div className="space-y-3 text-sm leading-7 text-zinc-300">
+                      <p>適合對象：公司戶、營運車輛、重視資金效率與用車管理的企業主。</p>
+                      <p>可提供：現金 vs 租賃比較、車型試算、企業戶成本分析、租賃提案規劃。</p>
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                        <div className="text-xs text-zinc-400">LINE</div>
+                        <div className="mt-1 text-base font-medium text-white">garykuo819</div>
+                      </div>
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                        <div className="text-xs text-zinc-400">電話</div>
+                        <div className="mt-1 text-base font-medium text-white">0911-815-955</div>
+                      </div>
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                        <div className="text-xs text-zinc-400">Facebook</div>
+                        <a href="https://www.facebook.com/share/1KHrfLqeuT/?mibextid=wwXIfr" target="_blank" rel="noreferrer" className="mt-1 block text-sm font-medium text-amber-200 underline underline-offset-4">
+                          前往 Facebook 聯絡頁面
+                        </a>
+                      </div>
+                      <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-amber-100">
+                        想看你的車型版本，我可以直接幫你客製一份比較表。
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        <motion.footer
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mt-6 rounded-3xl border border-white/10 bg-white/[0.03] p-4 text-xs leading-6 text-zinc-400 sm:mt-8 sm:p-5 sm:text-sm sm:leading-7"
+        >
+          ※ 本頁面為企業戶持有成本試算示意，實際條件仍應依車型、保險內容、租賃核准條件、殘值處理方式及公司會計認列口徑為準。
+        </motion.footer>
+      </div>
+    </div>
+  );
+}
