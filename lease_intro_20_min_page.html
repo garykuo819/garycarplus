@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>租賃服務說明｜Gary 郭振綱</title>
+  <style>
+    :root {
+      --bg: #edf3f9;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #dbe4f0;
+      --card: #ffffff;
+      --blue: #1d4ed8;
+      --blue2: #2563eb;
+      --blue-soft: #e9f0ff;
+      --gold: #b7791f;
+      --gold-soft: #fff6e8;
+      --green: #0f766e;
+      --green-soft: #e8f8f4;
+      --red: #b91c1c;
+      --red-soft: #fef2f2;
+      --shadow: 0 24px 60px rgba(15, 23, 42, 0.10);
+      --radius: 32px;
+      --slide-w: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 74px;
+      z-index: 50;
+      background: rgba(255,255,255,.84);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(219,228,240,.92);
+    }
+    .topbar-inner {
+      width: min(calc(100% - 28px), 1240px);
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: #fff;
+      font-weight: 900;
+      box-shadow: var(--shadow);
+    }
+    .brand strong { display: block; font-size: 15px; }
+    .brand span { display: block; font-size: 12px; color: var(--muted); }
+    .deck-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .meta-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-weight: 800;
+    }
+    .progress {
+      position: fixed;
+      top: 74px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 49;
+      background: rgba(219,228,240,.55);
+    }
+    .progress::after {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--blue), #60a5fa);
+      transform-origin: 0 50%;
+      animation: deck-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes deck-progress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .side-nav {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: rgba(29,78,216,.18);
+      border: 1px solid rgba(29,78,216,.24);
+    }
+
+    .deck { scroll-snap-type: y mandatory; }
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 108px 14px 34px;
+      position: relative;
+    }
+    .shell {
+      width: min(100%, var(--slide-w));
+      min-height: min(78vh, 820px);
+      border-radius: 34px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+    .dark {
+      background: linear-gradient(135deg, #14316e 0%, #1f4fb2 56%, #dce8ff 220%);
+      color: #fff;
+      border: none;
+      box-shadow: 0 30px 70px rgba(29,78,216,.22);
+    }
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 22px 28px 0;
+    }
+    .slide-no {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid #cdddff;
+    }
+    .dark .slide-no {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      border-color: rgba(255,255,255,.16);
+    }
+    .label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .dark .label { color: rgba(255,255,255,.82); }
+    .body {
+      padding: 18px 30px 30px;
+      display: grid;
+      gap: 22px;
+      align-content: center;
+      min-height: calc(100% - 62px);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 1.04;
+      letter-spacing: -.04em;
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3.8vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -.03em;
+    }
+    h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+    p { margin: 0; }
+    .lead {
+      font-size: 18px;
+      color: rgba(255,255,255,.92);
+      max-width: 760px;
+    }
+    .muted { color: var(--muted); }
+    .dark .muted { color: rgba(255,255,255,.84); }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      margin-bottom: 16px;
+    }
+    .grid-2, .grid-3, .hero-grid, .three {
+      display: grid;
+      gap: 18px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3, .three { grid-template-columns: repeat(3, 1fr); }
+    .hero-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1.05fr .95fr;
+    }
+    .profile-card {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 18px;
+      align-items: center;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 26px;
+      padding: 20px;
+    }
+    .profile-photo {
+      width: 180px;
+      height: 220px;
+      border-radius: 26px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow: 0 18px 40px rgba(15,23,42,.22);
+      flex-shrink: 0;
+    }
+    .profile-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .profile-photo::after {
+      content: "GARY";
+      position: absolute;
+      inset: auto 10px 10px 10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      background: rgba(15,23,42,.55);
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+    .profile-copy h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .profile-copy p {
+      color: rgba(255,255,255,.9);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .profile-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .profile-tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .box, .card, .decision, .compare, .quote, .value, .pillar, .fit, .case, .cta {
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 22px;
+    }
+    .dark .box, .dark .card {
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.14);
+      color: #fff;
+    }
+    .decision {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 14px;
+      align-items: start;
+      box-shadow: var(--shadow);
+    }
+    .num {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+    }
+
+    .compare {
+      padding: 0;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid #cfdcf5;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+    .compare-head, .compare-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .compare-head div {
+      padding: 18px 20px;
+      font-weight: 900;
+      border-bottom: 1px solid var(--line);
+    }
+    .compare-head div:first-child {
+      background: #eef2f7;
+      color: #334155;
+    }
+    .compare-head div:last-child {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: #fff;
+      position: relative;
+    }
+    .compare-head div:last-child::after {
+      content: "推薦先比較";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .02em;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.18);
+      color: #fff;
+    }
+    .compare-row div {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .compare-row div:first-child {
+      color: #334155;
+      font-weight: 700;
+      background: #f8fafc;
+    }
+    .compare-row div:last-child {
+      background: linear-gradient(180deg, #eef5ff 0%, #f7fbff 100%);
+      color: #1e3a8a;
+      font-weight: 800;
+      position: relative;
+    }
+    .compare-row div:last-child::before {
+      content: "✓";
+      margin-right: 8px;
+      color: #2563eb;
+      font-weight: 900;
+    }
+
+    .quote {
+      background: linear-gradient(135deg, var(--gold-soft), #fffdf8);
+      border-color: #f2dfb8;
+    }
+    .quote h3 { color: #7a4c09; }
+    .quote p { color: #7a5d2f; }
+
+    .warn {
+      background: linear-gradient(135deg, var(--red-soft), #fff);
+      border-color: #fecaca;
+    }
+    .warn h3 { color: var(--red); }
+
+    .tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid #bfe9e3;
+      margin-bottom: 10px;
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid #cdddff;
+    }
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      color: var(--muted);
+    }
+
+    .cta {
+      background: linear-gradient(135deg, #14316e, #1f4fb2);
+      color: #fff;
+      border: none;
+      box-shadow: 0 30px 70px rgba(29,78,216,.22);
+    }
+    .cta .muted { color: rgba(255,255,255,.88); }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .contact-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      font-weight: 800;
+    }
+
+    .foot {
+      position: absolute;
+      inset: auto 26px 20px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .dark .foot { color: rgba(255,255,255,.78); }
+    .hint {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(29,78,216,.06);
+      border: 1px solid rgba(29,78,216,.10);
+      font-weight: 700;
+    }
+    .dark .hint {
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.16);
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid, .grid-2, .grid-3, .three, .compare-head, .compare-row {
+        grid-template-columns: 1fr;
+      }
+      .profile-card {
+        grid-template-columns: 1fr;
+      }
+      .profile-photo {
+        width: 100%;
+        max-width: 240px;
+        height: 280px;
+      }
+      .shell { min-height: auto; }
+    }
+    @media (max-width: 720px) {
+      .topbar { height: 66px; }
+      .progress { top: 66px; }
+      .topbar-inner { width: calc(100% - 20px); }
+      .deck-meta, .side-nav { display: none; }
+      .slide { padding: 92px 10px 18px; }
+      .top { padding: 16px 18px 0; }
+      .body { padding: 14px 18px 24px; }
+      .foot {
+        position: static;
+        padding: 0 18px 18px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">G</div>
+        <div>
+          <strong>Gary 租賃服務說明</strong>
+          <span>給首次了解租賃的客戶</span>
+        </div>
+      </div>
+      <div class="deck-meta">
+        <div class="meta-pill">8 Slides</div>
+        <div class="meta-pill">20 分鐘內</div>
+      </div>
+    </div>
+  </div>
+  <div class="progress"></div>
+
+  <div class="side-nav" aria-hidden="true">
+    <a class="dot" href="#slide-1"></a>
+    <a class="dot" href="#slide-2"></a>
+    <a class="dot" href="#slide-3"></a>
+    <a class="dot" href="#slide-4"></a>
+    <a class="dot" href="#slide-5"></a>
+    <a class="dot" href="#slide-6"></a>
+    <a class="dot" href="#slide-7"></a>
+    <a class="dot" href="#slide-8"></a>
+  </div>
+
+  <main class="deck">
+    <section class="slide" id="slide-1">
+      <div class="shell dark">
+        <div class="top">
+          <div class="slide-no">01 / 08</div>
+          <div class="label">認識 Gary 與租賃主題</div>
+        </div>
+        <div class="body">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow">第一次看租賃也看得懂</div>
+              <h1>租賃不是買不到車，<br>而是換一種更輕鬆的用車方式</h1>
+              <p class="lead">很多人第一次聽到租賃，會以為只是另一種付款方式。其實不是。租賃的重點，是把原本分散的車輛費用、管理流程與後續麻煩，整合成比較省心、比較好安排的方案。</p>
+            </div>
+            <div class="grid-2" style="grid-template-columns:1fr;">
+              <div class="profile-card">
+                <div class="profile-photo">
+                  <img alt="Gary 郭振綱形象照" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 440'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23244a9b'/%3E%3Cstop offset='100%25' stop-color='%23152138'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='360' height='440' fill='url(%23g)'/%3E%3Ccircle cx='180' cy='150' r='72' fill='rgba(255,255,255,0.18)'/%3E%3Cpath d='M85 365c16-78 67-118 95-118 29 0 81 40 96 118' fill='rgba(255,255,255,0.16)'/%3E%3Ctext x='180' y='410' text-anchor='middle' font-size='28' font-family='Arial' font-weight='700' fill='white'%3E形象照置換區%3C/text%3E%3C/svg%3E" />
+                </div>
+                <div class="profile-copy">
+                  <h3>Gary 郭振綱</h3>
+                  <p>我主要協助客戶比較不同用車方式的差異，包含現金購車、貸款購車與租賃規劃。目的不是把方案講複雜，而是幫您找到更適合自己資金安排與用車需求的方式。</p>
+                  <div class="profile-tags">
+                    <span class="profile-tag">租賃用車規劃</span>
+                    <span class="profile-tag">企業 / 車商顧問</span>
+                    <span class="profile-tag">客戶易懂說明</span>
+                  </div>
+                </div>
+              </div>
+              <div class="box">
+                <h3>這份內容會告訴您</h3>
+                <p class="muted">租賃是什麼、跟購車差在哪裡、哪些人適合、對企業與個人有什麼好處，以及為什麼很多人比較之後會選擇租賃。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="foot">
+          <span>Gary 租賃服務說明</span>
+          <span class="hint">向下滑動翻頁</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-2">
+      <div class="shell">
+        <div class="top">
+          <div class="slide-no">02 / 08</div>
+          <div class="label">租賃是什麼</div>
+        </div>
+        <div class="body">
+          <div>
+            <h2>先用最簡單的方式說明：<br>什麼叫做汽車租賃？</h2>
+            <p class="muted">汽車租賃，就是由租賃公司提供車輛，您按月支付費用來使用車輛。您重點在「使用車」，不一定要自己持有車的所有權。</p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <h3>購車</h3>
+              <p class="muted">您自己買下這台車，車子登記在自己或公司名下。之後的保險、稅金、保養、維修、事故與未來賣車，大多都要自己處理。</p>
+            </div>
+            <div class="card">
+              <h3>租賃</h3>
+              <p class="muted">您不一定要自己買下車，而是用月租的方式取得使用權。很多原本零碎的支出與車務，也能更容易整合在同一個規劃裡。</p>
+            </div>
+          </div>
+          <div class="quote">
+            <h3>一句話記住就好</h3>
+            <p>購車比較像「自己把車整台接手」；租賃比較像「把車和後續管理一起交給專業團隊安排」。</p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>先懂定義，後面才會更好比較</span>
+          <span>02</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-3">
+      <div class="shell">
+        <div class="top">
+          <div class="slide-no">03 / 08</div>
+          <div class="label">不先比租賃，最容易忽略的事</div>
+        </div>
+        <div class="body">
+          <div>
+            <h2>很多人不是不適合租賃，<br>而是從來沒有人把差異講清楚</h2>
+            <p class="muted">如果只看車價，租賃很容易被誤會；但如果把整體用車成本、時間成本與管理成本一起看，答案往往會不一樣。</p>
+          </div>
+          <div class="grid-2">
+            <div class="warn">
+              <h3>只看車價，很容易忽略總成本</h3>
+              <p>買車當下看到的是車價，但後面還會陸續遇到保險、稅金、保養、維修、事故處理與未來賣車的問題。很多人真正多花的，不是在今天，而是在後面幾年。</p>
+            </div>
+            <div class="warn">
+              <h3>只看月繳，很容易被表面數字誤導</h3>
+              <p>貸款的月繳看起來可能比較低，但很多費用根本不在月繳裡。租賃的價值，是把原本分散的項目整合起來看，而不是只比一個表面月付。</p>
+            </div>
+            <div class="warn">
+              <h3>只看所有權，很容易忽略管理負擔</h3>
+              <p>自己持有車不代表最輕鬆。對忙碌的企業主、主管或業務來說，最麻煩的常常不是買車本身，而是後面的各種車務。</p>
+            </div>
+            <div class="warn">
+              <h3>不先比租賃，很容易少看一個更好的選項</h3>
+              <p>很多客戶真正比較過後才發現，原來租賃不只是替代方案，而是更符合自己資金安排與用車需求的方式。</p>
+            </div>
+          </div>
+          <div class="quote">
+            <h3>先比租賃，不代表一定要做租賃</h3>
+            <p>但不先比，很可能就直接錯過一種更省心、更好管、更符合現金流的做法。</p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>這一頁的目的，是讓客戶覺得：原來租賃不先比，反而比較可惜</span>
+          <span>03</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-4">
+      <div class="shell">
+        <div class="top">
+          <div class="slide-no">04 / 08</div>
+          <div class="label">同一台車，真正該怎麼比</div>
+        </div>
+        <div class="body">
+          <div>
+            <h2>如果是同一台車，<br>租賃通常更容易在整體安排上勝出</h2>
+            <p class="muted">真正該比的，不是表面誰比較便宜，而是誰能讓您 <strong>前期壓力更輕、後續更省心、費用更好掌握、未來更有彈性</strong>。這也是很多客戶比較後，會把租賃放在前面的原因。</p>
+          </div>
+          <div class="quote">
+            <h3>先看這個就夠了</h3>
+            <p>如果一種方式能讓您用車更穩定、管理更簡單、未來更好安排，那就值得優先比較。對很多客戶來說，這正是租賃最有感的地方。</p>
+          </div>
+          <div class="compare">
+            <div class="compare-head">
+              <div>傳統購車 / 貸款</div>
+              <div>租賃規劃</div>
+            </div>
+            <div class="compare-row">
+              <div>前期通常要準備較多資金，或綁住一段現金流。</div>
+              <div>前期壓力通常較輕，更容易把資金留在更重要的地方。</div>
+            </div>
+            <div class="compare-row">
+              <div>很多費用是後面才慢慢出現，不一定一開始就看得完整。</div>
+              <div>很多用車支出較容易被整理成固定節奏，預算通常更清楚。</div>
+            </div>
+            <div class="compare-row">
+              <div>保險、稅金、保養、事故、驗車等，通常還是要自己分散處理。</div>
+              <div>較有機會透過單一窗口整合協助，減少自己花時間追流程。</div>
+            </div>
+            <div class="compare-row">
+              <div>到期後若要換車、賣車、處理殘值，仍需自己面對。</div>
+              <div>到期安排通常更有節奏，適合重視換車彈性與管理效率的人。</div>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="fit">
+              <h3>租賃優勢 1</h3>
+              <p class="muted">前期資金通常更好安排，不必一開始就把壓力放大。</p>
+            </div>
+            <div class="fit">
+              <h3>租賃優勢 2</h3>
+              <p class="muted">很多原本分散的成本與流程，更容易被整理成固定節奏。</p>
+            </div>
+            <div class="fit">
+              <h3>租賃優勢 3</h3>
+              <p class="muted">整段用車通常更省心，也更適合重視效率與彈性的客戶。</p>
+            </div>
+          </div>
+          <div class="quote">
+            <h3>所以很多客戶比完後會改觀</h3>
+            <p>因為他們發現，租賃不是月付比較高或比較低的問題，而是整體到底有沒有比較輕鬆、比較合理。</p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>這一頁要把客戶的比較方式，從車價拉回整體價值</span>
+          <span>04</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-5">
+      <div class="shell">
+        <div class="top">
+          <div class="slide-no">05 / 08</div>
+          <div class="label">租賃怎麼分</div>
+        </div>
+        <div class="body">
+          <div>
+            <h2>租賃不是只有一種，<br>常見可以分成兩種理解</h2>
+            <p class="muted">第一次接觸租賃的人，只要先知道這兩種方向就夠了。</p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <h3>純租</h3>
+              <p class="muted">適合重視用車便利、費用穩定、服務整合的人。重點是把車開好、用好、管理簡單，合約期滿後依規劃歸還車輛，不必煩惱殘值與舊車問題。</p>
+              <div class="pill-row">
+                <span class="pill">重視省心</span>
+                <span class="pill">重視穩定</span>
+                <span class="pill">不一定要留車</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3>租購</h3>
+              <p class="muted">適合未來仍有保有規劃，但不想現在就壓太多資金的人。可以先讓資金安排更彈性，再依規劃處理後續車輛方向。</p>
+              <div class="pill-row">
+                <span class="pill">想留車可談</span>
+                <span class="pill">資金較彈性</span>
+                <span class="pill">兼顧使用與規劃</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote">
+            <h3>重點不是先背名詞</h3>
+            <p>而是先想：您比較想要單純好用，還是未來保有也一起規劃。知道這點，就知道該往哪個方向談。</p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>看完這一頁，就能知道租賃不是單一死方案</span>
+          <span>05</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-6">
+      <div class="shell">
+        <div class="top">
+          <div class="slide-no">06 / 08</div>
+          <div class="label">企業 / 5% / 20% 稅務優勢</div>
+        </div>
+        <div class="body">
+          <div>
+            <h2>如果您是公司行號，<br>租賃很常比購車更值得優先比較</h2>
+            <p class="muted">原因不只是月付比較好安排，而是租賃通常能把 <strong>5% 營業稅、20% 營利事業所得稅、現金流、費用節奏</strong> 一起放進同一套規劃裡看。對企業來說，這常常比單純看車價更重要。</p>
+          </div>
+          <div class="grid-2">
+            <div class="pillar">
+              <h3>核心觀念：營業稅（5%）的規劃價值</h3>
+              <p class="muted">公司在看租賃時，通常不只是在看一台車，而是在看每期租金所搭配的發票與支出節奏。租賃的好處之一，是費用與發票按月展開，企業更容易逐期規劃，也更容易與現金流安排同步思考。</p>
+            </div>
+            <div class="pillar">
+              <h3>核心觀念：營利事業所得稅（20%）的抵減效益</h3>
+              <p class="muted">除了每兩個月申報一次的營業稅，每年五月申報的「營所稅」才是大額節稅的主戰場。公司因為有購車或租車的支出，利潤減少，應繳的 20% 營所稅自然降低。</p>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="fit">
+              <h3>前期資金壓力較輕</h3>
+              <p class="muted">與其先壓一大筆資金在車上，很多企業會更傾向把資金留在營運、週轉或擴張使用。</p>
+            </div>
+            <div class="fit">
+              <h3>費用節奏更清楚</h3>
+              <p class="muted">租賃通常更容易把月支出、發票、費用化與稅務規劃放在同一個節奏裡看，管理上更直觀。</p>
+            </div>
+            <div class="fit">
+              <h3>整體安排更合理</h3>
+              <p class="muted">所以很多公司選擇租賃，不是單純因為便宜，而是因為從稅務、現金流到行政管理，整體更有效率。</p>
+            </div>
+          </div>
+          <div class="quote">
+            <h3>對企業客戶最容易理解的一句話</h3>
+            <p>如果您本來就是公司行號，租賃不只是把車開回去而已，而是把 5% 營業稅、20% 營所稅、現金流安排與車務管理，一起放進同一套規劃裡看。</p>
+          </div>
+          <div class="case">
+            <h3>提醒</h3>
+            <p class="muted">實際可扣抵與認列方式，仍需依車種、用途、合約實質內容與會計師專業意見判斷。這一頁重點是讓您先看懂：為什麼很多公司在比較用車方式時，會把租賃放在很前面。</p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>公司行號看租賃，看的不只是車，而是 5% / 20% / 現金流 / 管理效率</span>
+          <span>06</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-7">
+      <div class="shell">
+        <div class="top">
+          <div class="slide-no">07 / 08</div>
+          <div class="label">為什麼找格上</div>
+        </div>
+        <div class="body">
+          <div>
+            <h2>選擇格上，不只是把車租出去，<br>而是把後面的事情也一起安排好</h2>
+            <p class="muted">客戶最後真正在意的，不只是有沒有車，而是整段用車過程是否順利、是否省心、是否有人能協助處理。</p>
+          </div>
+          <div class="three">
+            <div class="fit">
+              <h3>財務面</h3>
+              <p class="muted">支出更固定、更好規劃，降低一次性資金壓力。對公司行號而言，也更容易把 5% 營業稅、20% 營所稅、費用節奏與現金流安排放在一起思考。</p>
+            </div>
+            <div class="fit">
+              <h3>服務面</h3>
+              <p class="muted">保修、道路救援、事故協助、代步安排等，有專業窗口可協助整合，降低自行處理的麻煩。</p>
+            </div>
+            <div class="fit">
+              <h3>管理面</h3>
+              <p class="muted">監理、驗車、保險、車隊行政、到期安排，不再全部落在自己身上，特別適合企業與多車需求。</p>
+            </div>
+          </div>
+          <div class="quote">
+            <h3>最容易理解的一句話</h3>
+            <p>做租賃，不只是把車交給格上，而是把車後面很多麻煩，也一起交給專業團隊處理。</p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>看到這裡，通常就能理解格上的價值不只是提供車而已</span>
+          <span>07</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-8">
+      <div class="shell">
+        <div class="top">
+          <div class="slide-no">08 / 08</div>
+          <div class="label">下一步與轉介紹</div>
+        </div>
+        <div class="body">
+          <div class="cta">
+            <h2>真正聰明的做法，不是先決定買車，<br>而是先把租賃一起比進來</h2>
+            <p class="muted">如果您本來就有購車或換車規劃，我最建議的不是直接選，而是先把現金購車、貸款購車與租賃放在同一個基準上比較。很多客戶比較完之後，才發現原本以為最直接的方式，不一定是最省心、最適合自己的方式。<br><br>您不一定最後一定要做租賃，但大多數人在真正比較過後，都會更能理解：為什麼租賃值得先納入選項。</p>
+            <div class="contact-row">
+              <div class="contact-pill">Gary 郭振綱</div>
+              <div class="contact-pill">LINE：@garycar</div>
+              <div class="contact-pill">電話：0911-815-955</div>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="fit">
+              <h3>現在就適合先比較的人</h3>
+              <p class="muted">本來就有購車、換車、公司用車規劃，且不想只看車價做決定的人。</p>
+            </div>
+            <div class="fit">
+              <h3>最值得轉介紹的對象</h3>
+              <p class="muted">企業主、公司行號、主管車、業務車、公務車、車商朋友，或任何準備換車但還沒完整比較過租賃的人。</p>
+            </div>
+            <div class="fit">
+              <h3>最好用的一句介紹話術</h3>
+              <p class="muted">「你先找 Gary 比一下，不一定要做租賃，但他會幫你把現金、貸款、租賃哪個更適合你，一次講清楚。」</p>
+            </div>
+          </div>
+          <div class="quote">
+            <h3>如果您認同這個邏輯，也歡迎幫我介紹</h3>
+            <p>因為對很多人來說，真正需要的不是被推銷，而是先有人把租賃講清楚、把差異比清楚，這樣做決定才不會走冤枉路。</p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>最好的收尾，是讓客戶自己想比較，也願意介紹別人來比較</span>
+          <span>08</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
